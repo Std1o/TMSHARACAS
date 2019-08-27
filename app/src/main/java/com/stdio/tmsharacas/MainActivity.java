@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity
     public static final String TAG = "MainActivity";
     public static final int REQUEST_CAMERA = 1;
     public static final int REQUEST_CHOOSE = 2;
-    private WebView mWebView;
+    public static WebView mWebView;
+    private String url = "https://vk.com";
     public static ProgressBar progressBar;
 
     public static void verifyStoragePermissions(Activity activity) {
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity
 
         mWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         mWebView.setScrollbarFadingEnabled(false);
-        mWebView.loadUrl("https://vk.com");
+        mWebView.loadUrl(url);
         verifyStoragePermissions(this);
     }
 
