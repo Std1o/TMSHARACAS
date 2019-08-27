@@ -5,34 +5,32 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:id="@+id/nav_profile"
+            android:title="@string/menu_profile" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:id="@+id/nav_balance"
+            android:title="@string/menu_balance" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:id="@+id/nav_buy_packets"
+            android:title="@string/menu_buy_packets" />
         <item
-            android:id="@+id/nav_tools"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/menu_tools" />
+            android:id="@+id/nav_my_packets"
+            android:title="@string/menu_my_packets" />
+        <item
+            android:id="@+id/nav_clients"
+            android:title="@string/menu_clients" />
+        <item
+            android:id="@+id/nav_view_settings"
+            android:title="@string/menu_view_settings" />
+        <item
+            android:id="@+id/nav_messages"
+            android:title="@string/menu_messages" />
+        <item
+            android:id="@+id/nav_news"
+            android:title="@string/menu_news" />
+        <item
+            android:id="@+id/nav_refs"
+            android:title="@string/menu_refs" />
     </group>
-
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/menu_share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/menu_send" />
-        </menu>
-    </item>
 
 </menu>

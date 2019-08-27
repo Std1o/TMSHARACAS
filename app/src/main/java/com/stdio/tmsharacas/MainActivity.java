@@ -130,19 +130,37 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (id) {
+            case R.id.nav_profile:
+                url = "https://tvsharing.ru/user/profile";
+                break;
+            case R.id.nav_balance:
+                url = "https://tvsharing.ru/balance";
+                break;
+            case R.id.nav_buy_packets:
+                url = "https://tvsharing.ru/packets/all";
+                break;
+            case R.id.nav_my_packets:
+                url = "https://tvsharing.ru/packets/list";
+                break;
+            case R.id.nav_clients:
+                url = "https://tvsharing.ru/dealers/list";
+                break;
+            case R.id.nav_view_settings:
+                url = "https://tvsharing.ru/server/load";
+                break;
+            case R.id.nav_messages:
+                url = "https://tvsharing.ru/messages";
+                break;
+            case R.id.nav_news:
+                url = "https://tvsharing.ru/news/all";
+                break;
+            case R.id.nav_refs:
+                url = "https://tvsharing.ru/ref";
+                break;
         }
+
+        mWebView.loadUrl(url);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
