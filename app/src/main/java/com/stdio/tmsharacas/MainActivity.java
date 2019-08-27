@@ -28,19 +28,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.Menu;
 import android.webkit.CookieManager;
-import android.webkit.ValueCallback;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
+
 import static com.stdio.tmsharacas.WebViewHelper.afterChosePic;
 import static com.stdio.tmsharacas.WebViewHelper.cameraUri;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    private String contextPath;
-    private String originalCookiePath;
-    private String myCookieDbPath;
 
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -53,6 +49,7 @@ public class MainActivity extends AppCompatActivity
     public static final int REQUEST_CAMERA = 1;
     public static final int REQUEST_CHOOSE = 2;
     private WebView mWebView;
+    public static ProgressBar progressBar;
 
     public static void verifyStoragePermissions(Activity activity) {
         // Check if we have write permission
@@ -72,14 +69,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        String extDir = Environment.getExternalStorageDirectory().getPath();
-
-        myCookieDbPath = extDir + "/MyCookies";
-        contextPath = "/data/data/" + getApplicationContext().getPackageName() + "/";
-        originalCookiePath = contextPath + "app_webview/Cookies";
+        progressBar = findViewById(R.id.progressBar);
         initView();
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

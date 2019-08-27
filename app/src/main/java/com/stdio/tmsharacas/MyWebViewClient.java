@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -38,12 +39,14 @@ public class MyWebViewClient extends WebViewClient {
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         Log.d(TAG, "URL地址:" + url);
+        MainActivity.progressBar.setVisibility(View.VISIBLE);
         super.onPageStarted(view, url, favicon);
     }
 
     @Override
     public void onPageFinished(WebView view, String url) {
         Log.i(TAG, "onPageFinished");
+        MainActivity.progressBar.setVisibility(View.GONE);
         super.onPageFinished(view, url);
     }
 
