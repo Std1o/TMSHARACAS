@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "805810529506",
+    "firebase_url": "https://tmsharacas-d8f69.firebaseio.com",
+    "project_id": "tmsharacas-d8f69",
+    "storage_bucket": "tmsharacas-d8f69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805810529506:android:c93e2072b7416172",
+        "android_client_info": {
+          "package_name": "com.stdio.tmsharacas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "805810529506-163qj5is9p7s1lpaplsntnm6o0ij7bh5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stdio.tmsharacas",
+            "certificate_hash": "18e254fd3d34e473405a6fa6f5fca10d99fb66c4"
+          }
+        },
+        {
+          "client_id": "805810529506-i89kn12r8cf3faon8ubo8h1pon80rsh3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVCn0K9Zn2Hb6XMgsJsNtCILVJJqiNYjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "805810529506-i89kn12r8cf3faon8ubo8h1pon80rsh3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

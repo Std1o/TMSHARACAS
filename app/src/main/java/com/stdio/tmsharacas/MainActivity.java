@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
     public static final int REQUEST_CAMERA = 1;
     public static final int REQUEST_CHOOSE = 2;
     public static WebView mWebView;
-    private String url = "https://vk.com";
+    private String url = "https://tvsharing.ru/user/profile";
     public static ProgressBar progressBar;
 
     public static void verifyStoragePermissions(Activity activity) {
