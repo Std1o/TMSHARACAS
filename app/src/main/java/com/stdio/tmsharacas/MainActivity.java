@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity
     public static WebView mWebView;
     private String url = "https://tvsharing.ru/user/profile";
     public static ProgressBar progressBar;
+    public static String cookie;
+    public static SharedPreferences.Editor e;
 
     public static void verifyStoragePermissions(Activity activity) {
         // Check if we have write permission
@@ -93,7 +97,6 @@ public class MainActivity extends AppCompatActivity
             { WebView.setWebContentsDebuggingEnabled(true); }
         }
 
-        CookieManager.getInstance().setAcceptCookie(true);
         mWebView = (WebView) findViewById(R.id.maim_web);
         mWebView.setWebViewClient(new MyWebViewClient());
         mWebView.setWebChromeClient(new MyWebChromeClient(this, MainActivity.this));
@@ -109,6 +112,16 @@ public class MainActivity extends AppCompatActivity
 
         mWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         mWebView.setScrollbarFadingEnabled(false);
+
+        SharedPreferences getSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        cookie = getSharedPreferences.getString("cookie", "");
+        e = getSharedPreferences.edit();
+        CookieManager manager = CookieManager.getInstance();
+
+        manager.setAcceptCookie(true);
+        manager.setCookie(url, cookie);
+
+        CookieSyncManager.getInstance().sync();
         mWebView.loadUrl(url);
         verifyStoragePermissions(this);
     }

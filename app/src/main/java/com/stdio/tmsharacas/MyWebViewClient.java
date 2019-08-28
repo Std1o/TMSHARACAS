@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -49,6 +50,12 @@ public class MyWebViewClient extends WebViewClient {
         Log.i(TAG, "onPageFinished");
         MainActivity.progressBar.setVisibility(View.GONE);
         MainActivity.mWebView.setVisibility(View.VISIBLE);
+        if (!url.equals("https://tvsharing.ru/user/login")) {
+            String cookies = CookieManager.getInstance().getCookie(url);
+            MainActivity.e.putString("cookie", cookies);
+            MainActivity. e.apply();
+            MainActivity.cookie = cookies;
+        }
         super.onPageFinished(view, url);
     }
 
