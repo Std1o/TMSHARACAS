@@ -2,6 +2,7 @@ package com.stdio.tmsharacas;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -13,6 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 
 import androidx.core.app.ActivityCompat;
@@ -29,6 +31,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
@@ -110,6 +113,26 @@ public class MainActivity extends AppCompatActivity
         verifyStoragePermissions(this);
     }
 
+    public static void clearCookies(Context context)
+    {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            Log.d("AAAA", "Using clearCookies code for API >=" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
+            CookieManager.getInstance().removeAllCookies(null);
+            CookieManager.getInstance().flush();
+        } else
+        {
+            Log.d("AAAA", "Using clearCookies code for API <" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
+            CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(context);
+            cookieSyncMngr.startSync();
+            CookieManager cookieManager=CookieManager.getInstance();
+            cookieManager.removeAllCookie();
+            cookieManager.removeSessionCookie();
+            cookieSyncMngr.stopSync();
+            cookieSyncMngr.sync();
+        }
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -157,6 +180,11 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_refs:
                 url = "https://tvsharing.ru/ref";
+                break;
+            case R.id.nav_exit:
+                mWebView.clearCache(true);
+                mWebView.clearHistory();
+                clearCookies(this);
                 break;
         }
 

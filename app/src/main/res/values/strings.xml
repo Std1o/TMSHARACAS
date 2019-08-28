@@ -16,6 +16,7 @@
     <string name="menu_messages">Сообщения</string>
     <string name="menu_news">Новости</string>
     <string name="menu_refs">Рефералы</string>
+    <string name="menu_exit">Выйти</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -31,6 +31,9 @@
         <item
             android:id="@+id/nav_refs"
             android:title="@string/menu_refs" />
+        <item
+            android:id="@+id/nav_exit"
+            android:title="@string/menu_exit" />
     </group>
 
 </menu>
