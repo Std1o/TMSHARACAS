@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity
     public static void clearCookies(Context context)
     {
 
-        String cookies = CookieManager.getInstance().getCookie("https://tvsharing.ru/user/login");
+        String cookies = "";
         e.putString("cookie", cookies);
         e.apply();
         cookie = cookies;
@@ -236,6 +236,7 @@ public class MainActivity extends AppCompatActivity
             cookieSyncMngr.stopSync();
             cookieSyncMngr.sync();
         }
+        CookieSyncManager.getInstance().sync();
     }
 
     @Override
