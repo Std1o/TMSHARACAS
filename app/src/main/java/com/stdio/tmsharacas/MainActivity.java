@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity
                 else {
                     mWebView.setVisibility(View.VISIBLE);
                 }
-                if (!urlFromWebview.equals("https://tvsharing.ru/user/login") && !urlFromWebview.equals("https://tvsharing.ru/news/all")) {
+                if (!urlFromWebview.equals("https://tvsharing.ru/user/login") && !urlFromWebview.equals("https://tvsharing.ru/news/all") && !urlFromWebview.equals("https://tvsharing.ru/user/forgot") && !urlFromWebview.equals("https://tvsharing.ru/user/register")) {
                     if (!isLoggedIn) {
                         saveCookie(urlFromWebview);
                     }
@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        if (!isLoggedIn || url.equals("https://tvsharing.ru/news/all")) {
+        if (!isLoggedIn && !url.equals("https://tvsharing.ru/news/all")) {
             url = "https://tvsharing.ru/user/login";
         }
         mWebView.loadUrl(url);
