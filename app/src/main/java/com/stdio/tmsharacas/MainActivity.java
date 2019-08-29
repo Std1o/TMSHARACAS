@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -20,6 +21,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -236,6 +238,7 @@ public class MainActivity extends AppCompatActivity
             cookieSyncMngr.stopSync();
             cookieSyncMngr.sync();
         }
+        mWebView.loadUrl("https://tvsharing.ru/user/login");
         CookieSyncManager.getInstance().sync();
     }
 
@@ -288,9 +291,7 @@ public class MainActivity extends AppCompatActivity
                 url = "https://tvsharing.ru/ref";
                 break;
             case R.id.nav_exit:
-                mWebView.clearCache(true);
-                mWebView.clearHistory();
-                clearCookies(this);
+                confirmClearCookies();
                 break;
         }
 
@@ -302,6 +303,38 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void confirmClearCookies() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+
+//        // set title
+//        alertDialogBuilder.setTitle("Delete item");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Выйти?")
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mWebView.clearCache(true);
+                        mWebView.clearHistory();
+                        clearCookies(MainActivity.this);
+                    }
+                })
+                .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 
     @Override
