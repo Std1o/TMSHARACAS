@@ -1,6 +1,9 @@
 package com.stdio.tmsharacas;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.Log;
@@ -9,10 +12,18 @@ import android.webkit.CookieManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import static com.stdio.tmsharacas.MainActivity.TAG;
 
 public class MyWebViewClient extends WebViewClient {
+
+    Activity activity;
+    Context context;
+
+    public MyWebViewClient (Context mContext, Activity mActivity) {
+
+    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -44,19 +55,4 @@ public class MyWebViewClient extends WebViewClient {
         MainActivity.mWebView.setVisibility(View.GONE);
         super.onPageStarted(view, url, favicon);
     }
-
-    @Override
-    public void onPageFinished(WebView view, String url) {
-        Log.i(TAG, "onPageFinished");
-        MainActivity.progressBar.setVisibility(View.GONE);
-        MainActivity.mWebView.setVisibility(View.VISIBLE);
-        if (!url.equals("https://tvsharing.ru/user/login")) {
-            String cookies = CookieManager.getInstance().getCookie(url);
-            MainActivity.e.putString("cookie", cookies);
-            MainActivity. e.apply();
-            MainActivity.cookie = cookies;
-        }
-        super.onPageFinished(view, url);
-    }
-
 }

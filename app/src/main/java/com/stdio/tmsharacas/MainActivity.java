@@ -2,6 +2,7 @@ package com.stdio.tmsharacas;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity
     public static ProgressBar progressBar;
     public static String cookie;
     public static SharedPreferences.Editor e;
+    public static boolean isLoggedIn;
+    ProgressDialog dialog;
 
     public static void verifyStoragePermissions(Activity activity) {
         // Check if we have write permission
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         progressBar = findViewById(R.id.progressBar);
+        dialog = new ProgressDialog(this);
         initView();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -98,7 +102,55 @@ public class MainActivity extends AppCompatActivity
         }
 
         mWebView = (WebView) findViewById(R.id.maim_web);
-        mWebView.setWebViewClient(new MyWebViewClient());
+        mWebView.setWebViewClient(new MyWebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String urlFromWebview) {
+                Log.i(TAG, "onPageFinished");
+                progressBar.setVisibility(View.GONE);
+                if (dialog.isShowing()) {
+                    if (urlFromWebview.equals("https://tvsharing.ru/user/profile")) {
+                        mWebView.loadUrl("https://tvsharing.ru/balance");
+                    }
+                    else if (urlFromWebview.equals("https://tvsharing.ru/balance")) {
+                        mWebView.loadUrl("https://tvsharing.ru/packets/all");
+                    }
+                    else if (urlFromWebview.equals("https://tvsharing.ru/packets/all")) {
+                        mWebView.loadUrl("https://tvsharing.ru/packets/list");
+                    }
+                    else if (urlFromWebview.equals("https://tvsharing.ru/packets/list")) {
+                        mWebView.loadUrl("https://tvsharing.ru/dealers/list");
+                    }
+                    else if (urlFromWebview.equals("https://tvsharing.ru/dealers/list")) {
+                        mWebView.loadUrl("https://tvsharing.ru/server/load");
+                    }
+                    else if (urlFromWebview.equals("https://tvsharing.ru/server/load")) {
+                        mWebView.loadUrl("https://tvsharing.ru/messages");
+                    }
+                    else if (urlFromWebview.equals("https://tvsharing.ru/messages")) {
+                        mWebView.loadUrl("https://tvsharing.ru/ref");
+                    }
+                    else if (urlFromWebview.equals("https://tvsharing.ru/ref")) {
+                        String cookies = CookieManager.getInstance().getCookie(urlFromWebview);
+                        e.putString("cookie", cookies);
+                        e.apply();
+                        cookie = cookies;
+                        CookieSyncManager.getInstance().sync();
+                        dialog.dismiss();
+                        mWebView.loadUrl("https://tvsharing.ru/news/all");
+                        mWebView.setVisibility(View.VISIBLE);
+                    }
+                }
+                else {
+                    mWebView.setVisibility(View.VISIBLE);
+                }
+                if (!urlFromWebview.equals("https://tvsharing.ru/user/login") && !urlFromWebview.equals("https://tvsharing.ru/news/all")) {
+                    if (!isLoggedIn) {
+                        saveCookie(urlFromWebview);
+                    }
+                }
+                super.onPageFinished(view, urlFromWebview);
+            }
+        });
         mWebView.setWebChromeClient(new MyWebChromeClient(this, MainActivity.this));
 
         mWebView.getSettings().setJavaScriptEnabled(true);
@@ -115,6 +167,7 @@ public class MainActivity extends AppCompatActivity
 
         SharedPreferences getSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         cookie = getSharedPreferences.getString("cookie", "");
+        isLoggedIn = getSharedPreferences.getBoolean("loggedIn", false);
         e = getSharedPreferences.edit();
         CookieManager manager = CookieManager.getInstance();
 
@@ -122,12 +175,51 @@ public class MainActivity extends AppCompatActivity
         manager.setCookie(url, cookie);
 
         CookieSyncManager.getInstance().sync();
+
+        if (!isLoggedIn) {
+            url = "https://tvsharing.ru/user/login";
+        }
+        System.out.println("COOOKie " + cookie);
         mWebView.loadUrl(url);
         verifyStoragePermissions(this);
     }
 
+    private void saveCookie(final String urlFromWebview) {
+        e.putBoolean("loggedIn", true);
+        e.apply();
+        isLoggedIn = true;
+        dialog.setTitle("Cookie saving");
+        dialog.setMessage("Please wait...");
+        dialog.show();
+        Thread sender = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mWebView.loadUrl("https://tvsharing.ru/user/profile");
+                    }
+                });
+            }
+        });
+        sender.start();
+    }
+
     public static void clearCookies(Context context)
     {
+
+        String cookies = CookieManager.getInstance().getCookie("https://tvsharing.ru/user/login");
+        e.putString("cookie", cookies);
+        e.apply();
+        cookie = cookies;
+        e.putBoolean("loggedIn", false);
+        e.apply();
+        isLoggedIn = false;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             Log.d("AAAA", "Using clearCookies code for API >=" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
@@ -201,6 +293,9 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
+        if (!isLoggedIn || url.equals("https://tvsharing.ru/news/all")) {
+            url = "https://tvsharing.ru/user/login";
+        }
         mWebView.loadUrl(url);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
